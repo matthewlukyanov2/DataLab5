@@ -1,10 +1,14 @@
 // Import the express module
 const express = require('express');
-const path = require('path'); // Import path for serving HTML
+const bodyParser = require('body-parser'); // Import body-parser
+const path = require('path'); 
 const app = express();
 const port = 3000;
 
-// Error handling middleware
+// Use body-parser to parse URL-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Error handling 
 app.use((err, req, res, next) => {
     console.error(err.stack); 
     res.status(500).send('Something went wrong!'); 
@@ -22,10 +26,10 @@ app.get('/hello/:name/:surname', (req, res) => {
     res.send(`Hello ${name} ${surname}`); 
 });
 
-// Handle the GET request for /name
-app.get('/name', (req, res) => {
-    const firstname = req.query.firstname; // Get first name from query
-    const lastname = req.query.lastname; // Get last name from query
+// Handle the POST request for /name
+app.post('/name', (req, res) => {
+    const firstname = req.body.firstname; // Get first name 
+    const lastname = req.body.lastname; // Get last name 
     res.send(`Hello ${firstname} ${lastname}`); // Respond with the full name
 });
 
