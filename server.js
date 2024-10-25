@@ -1,5 +1,6 @@
 // Import the express module
 const express = require('express');
+const path = require('path'); // Import path for serving HTML
 const app = express();
 const port = 3000;
 
@@ -16,10 +17,19 @@ app.get('/', (req, res) => {
 
 // Add a route that accepts a name parameter in the URL
 app.get('/hello/:name/:surname', (req, res) => {
-    //const name = req.params.name; 
-    res.send('Hello ' +req.params.name+ " " +req.params.surname); 
+    const name = req.params.name; 
+    const surname = req.params.surname;
+    res.send(`Hello ${name} ${surname}`); 
 });
 
+// Handle the GET request for /name
+app.get('/name', (req, res) => {
+    const firstname = req.query.firstname; // Get first name from query
+    const lastname = req.query.lastname; // Get last name from query
+    res.send(`Hello ${firstname} ${lastname}`); // Respond with the full name
+});
+
+// Example movies route
 app.get('/api/movies', (req, res) => {
     const movies = [
         {
@@ -44,11 +54,10 @@ app.get('/api/movies', (req, res) => {
             "Poster": "https://example.com/poster3.jpg"
         }
     ];
-    res.status(200).json({ myMovies:movies });
+    res.status(200).json({ myMovies: movies });
 });
 
-const path = require('path');
-
+// Serve the index.html file
 app.get('/index', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -57,5 +66,3 @@ app.get('/index', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-
-
